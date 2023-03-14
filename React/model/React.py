@@ -105,7 +105,8 @@ class React(BaseTAPGenerator):
         # Define Module
         self.input_proj = MLP(input_feat_dim, feat_dim, feat_dim, 1)
 
-        self.query_embed = nn.Embedding(num_queries, self.feat_dim * 2)
+        # self.query_embed = nn.Embedding(num_queries, self.feat_dim * 2)
+        self.query_embed = nn.Embedding(num_queries, self.feat_dim)
 
         self.transformer = Transformer(num_class=num_class, d_model=feat_dim, nhead=n_head, num_encoder_layers=num_encoder_layers,
                                        num_decoder_layers=num_decoder_layers, encoder_sample_num=encoder_sample_num,
@@ -255,8 +256,8 @@ class React(BaseTAPGenerator):
         raw_feature.tensors = input_feature
         raw_feature.mask = masks
 
-        result, init_reference, inter_references, memory, tgt = self.transformer(input_feature, masks, query_vector,
-                                                                                 snippet_num=snippet_num)  # bz, Lq, dim
+        result, init_reference, inter_references, memory, tgt = \
+            self.transformer(input_feature, masks, query_vector, snippet_num=snippet_num)  # bz, Lq, dim
 
         outputs_class, outputs_coord = self.output_refinement(init_reference, inter_references, result)
 
