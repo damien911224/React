@@ -4,14 +4,14 @@
 #include <ATen/cuda/CUDAContext.h>
 
 //for pytorch lower 1.8 version
-// #include <THC/THC.h>
-// #include <THC/THCAtomics.cuh>
-// #include <THC/THCDeviceUtils.cuh>
+#include <THC/THC.h>
+#include <THC/THCAtomics.cuh>
+#include <THC/THCDeviceUtils.cuh>
 
 //for pytorch 1.9 version
-#include <ATen/ceil_div.h>
-#include <ATen/cuda/ThrustAllocator.h>
-#include <ATen/cuda/DeviceUtils.cuh>
+// #include <ATen/ceil_div.h>
+// #include <ATen/cuda/ThrustAllocator.h>
+// #include <ATen/cuda/DeviceUtils.cuh>
 
 
 // TODO make it in a common file
