@@ -223,7 +223,6 @@ class TransformerDecoder(nn.Module):
 
         # reference_point = torch.sigmoid(self.reference_point(tgt))  # bz, Lq, 1
 
-        bs = src.shape[0]
         reference_point = self.refpoint_embed.weight[None].repeat(bs, 1, 1)
 
         init_reference_point = reference_point
