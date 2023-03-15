@@ -214,9 +214,9 @@ class TransformerDecoder(nn.Module):
                 ):
         bz = memory.shape[1]
 
-        # output, tgt = torch.chunk(tgt, 2, dim=1)
-        # tgt = tgt.unsqueeze(0).expand(bz, -1, -1)
-        output = tgt
+        output, tgt = torch.chunk(tgt, 2, dim=1)
+        tgt = tgt.unsqueeze(0).expand(bz, -1, -1)
+        # output = tgt
         output = output.unsqueeze(0).expand(bz, -1, -1).transpose(0, 1)
         query_features = output
         intermediate = []
