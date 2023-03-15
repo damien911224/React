@@ -32,7 +32,7 @@ class MLP(nn.Module):
 class Transformer(nn.Module):
 
     def __init__(self, num_class, d_model=512, nhead=8, encoder_sample_num=3, decoder_sample_num=4, num_encoder_layers=6,
-                 num_decoder_layers=6, dim_feedforward=2048, dropout=0.1, activation="relu", normalize_before=False,
+                 num_decoder_layers=6, dim_feedforward=2048, dropout=0.1, activation="prelu", normalize_before=False,
                  return_intermediate_dec=False):
         super().__init__()
 
@@ -430,7 +430,7 @@ class RelationAttention(nn.Module):
 class TransformerEncoderLayer(nn.Module):
 
     def __init__(self, d_model, nhead, dim_feedforward=2048, dropout=0.1,
-                 activation="prelu", normalize_before=False, sample_num=3):
+                 activation="relu", normalize_before=False, sample_num=3):
         super().__init__()
 
         self.self_attn = DeformableAttention(d_model, num_heads=nhead, sampling_point=sample_num)
@@ -511,7 +511,7 @@ class TransformerEncoderLayer(nn.Module):
 class TransformerDecoderLayer(nn.Module):
 
     def __init__(self, d_model, nhead, dim_feedforward=2048, dropout=0.1,
-                 activation="prelu", normalize_before=False, sample_num=3):
+                 activation="relu", normalize_before=False, sample_num=3):
         super().__init__()
         self.self_attn = RelationAttention(d_model, nhead, nlayer=1)
         self.cross_attn = DeformableAttention(d_model, num_heads=nhead, sampling_point=sample_num)
