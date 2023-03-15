@@ -4,6 +4,9 @@ import os
 import os.path as osp
 import warnings
 
+import sys
+sys.path.append("/mnt/ssd0/React")
+
 import mmcv
 import torch
 from mmcv import Config, DictAction
