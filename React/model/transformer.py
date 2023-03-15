@@ -228,6 +228,9 @@ class TransformerDecoder(nn.Module):
 
         init_reference_point = reference_point
 
+        print(valid_ratio.shape)
+        exit()
+
         for i, layer in enumerate(self.layers):
             reference_points_input = reference_point[:, :, None] * valid_ratio.unsqueeze(-1)
             query_sine_embed = gen_sineembed_for_position(reference_points_input[:, :, 0, :]) # bs, nq, 256*2
