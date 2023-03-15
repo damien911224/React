@@ -130,6 +130,7 @@ def turn_off_pretrained(cfg):
 
 
 def inference_pytorch(args, cfg, distributed, data_loader):
+    print("pytorch")
     """Get predictions by pytorch models."""
     if args.average_clips is not None:
         # You can set average_clips during testing, it will override the
@@ -176,6 +177,7 @@ def inference_pytorch(args, cfg, distributed, data_loader):
 
 
 def inference_tensorrt(ckpt_path, distributed, data_loader, batch_size):
+    print("tensorrt")
     """Get predictions by TensorRT engine.
 
     For now, multi-gpu mode and dynamic tensor shape are not supported.
@@ -226,6 +228,7 @@ def inference_tensorrt(ckpt_path, distributed, data_loader, batch_size):
 
 
 def inference_onnx(ckpt_path, distributed, data_loader, batch_size):
+    print("onnx")
     """Get predictions by ONNX.
 
     For now, multi-gpu mode and dynamic tensor shape are not supported.
