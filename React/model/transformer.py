@@ -430,7 +430,7 @@ class RelationAttention(nn.Module):
 class TransformerEncoderLayer(nn.Module):
 
     def __init__(self, d_model, nhead, dim_feedforward=2048, dropout=0.1,
-                 activation="relu", normalize_before=False, sample_num=3):
+                 activation="prelu", normalize_before=False, sample_num=3):
         super().__init__()
 
         self.self_attn = DeformableAttention(d_model, num_heads=nhead, sampling_point=sample_num)
@@ -511,7 +511,7 @@ class TransformerEncoderLayer(nn.Module):
 class TransformerDecoderLayer(nn.Module):
 
     def __init__(self, d_model, nhead, dim_feedforward=2048, dropout=0.1,
-                 activation="relu", normalize_before=False, sample_num=3):
+                 activation="prelu", normalize_before=False, sample_num=3):
         super().__init__()
         self.self_attn = RelationAttention(d_model, nhead, nlayer=1)
         self.cross_attn = DeformableAttention(d_model, num_heads=nhead, sampling_point=sample_num)
@@ -575,6 +575,8 @@ def _get_activation_fn(activation):
         return F.gelu
     if activation == "glu":
         return F.glu
+    if activation == "prelu":
+        return nn.PReLU()
     raise RuntimeError(F"activation should be relu/gelu, not {activation}.")
 
 
