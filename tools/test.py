@@ -23,14 +23,14 @@ from mmaction.utils import register_module_hooks
 from thop import profile, clever_format
 
 # TODO import test functions from mmcv and delete them from mmaction2
-# try:
-#     from mmcv.engine import multi_gpu_test, single_gpu_test
-# except (ImportError, ModuleNotFoundError):
-#     warnings.warn(
-#         'DeprecationWarning: single_gpu_test, multi_gpu_test, '
-#         'collect_results_cpu, collect_results_gpu from mmaction2 will be '
-#         'deprecated. Please install mmcv through master branch.')
-from mmaction.apis import multi_gpu_test, single_gpu_test
+try:
+    from mmcv.engine import multi_gpu_test, single_gpu_test
+except (ImportError, ModuleNotFoundError):
+    warnings.warn(
+        'DeprecationWarning: single_gpu_test, multi_gpu_test, '
+        'collect_results_cpu, collect_results_gpu from mmaction2 will be '
+        'deprecated. Please install mmcv through master branch.')
+    from mmaction.apis import multi_gpu_test, single_gpu_test
 
 
 def parse_args():
@@ -163,6 +163,13 @@ def inference_pytorch(args, cfg, distributed, data_loader):
 
     if not distributed:
         model = MMDataParallel(model, device_ids=[0])
+
+        for data in data_loader:
+            macs, params = profile(model, inputs=(data["raw_features"][0][None],))
+            # macs, params = clever_format([macs, params], "%.3f")
+            print(macs, params)
+            exit()
+
         outputs = single_gpu_test(model, data_loader)
     else:
         model = MMDistributedDataParallel(
