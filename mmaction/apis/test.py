@@ -51,6 +51,9 @@ if not from_mmcv:
             for _ in range(batch_size):
                 prog_bar.update()
 
+            print(data.keys())
+            exit()
+
             macs, params = profile(model, inputs=(data, ))
             # macs, params = clever_format([macs, params], "%.3f")
             print(macs, params)
