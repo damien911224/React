@@ -13,7 +13,7 @@ from mmcv.runner import get_dist_info, init_dist, set_random_seed
 from mmcv.utils import get_git_hash
 
 import sys
-sys.path.append("..")
+sys.path.append("/mnt/ssd0/React")
 from mmaction import __version__
 from mmaction.apis import train_model
 from mmaction.datasets import build_dataset
