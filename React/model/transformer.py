@@ -146,7 +146,7 @@ class TransformerDecoder(nn.Module):
 
         self.reference_point = nn.Linear(self.layers[0].d_model, 1)
 
-        self.refpoint_embed = nn.Embedding(40, 4)
+        self.refpoint_embed = nn.Embedding(40, 2)
         self.ref_point_head = MLP(2 * self.layers[0].d_model, self.layers[0].d_model, self.layers[0].d_model, 2)
         self.query_scale = MLP(self.layers[0].d_model, self.layers[0].d_model, self.layers[0].d_model, 2)
 
@@ -224,16 +224,13 @@ class TransformerDecoder(nn.Module):
 
         # reference_point = torch.sigmoid(self.reference_point(tgt))  # bz, Lq, 1
 
-        reference_point = self.refpoint_embed.weight[None].repeat(bz, 1, 1)
+        reference_point = torch.sigmoid(self.refpoint_embed.weight[None].repeat(bz, 1, 1))
 
         init_reference_point = reference_point
 
-        print(valid_ratio.shape)
-        exit()
-
         for i, layer in enumerate(self.layers):
-            reference_points_input = reference_point[:, :, None] * valid_ratio.unsqueeze(-1)
-            query_sine_embed = gen_sineembed_for_position(reference_points_input[:, :, 0, :]) # bs, nq, 256*2
+            reference_points_input = reference_point * valid_ratio.unsqueeze(-1)
+            query_sine_embed = gen_sineembed_for_position(reference_points_input) # bs, nq, 256*2
             raw_query_pos = self.ref_point_head(query_sine_embed) # bs, nq, 256
             pos_scale = self.query_scale(output) if i != 0 else 1
             query_pos = pos_scale * raw_query_pos
