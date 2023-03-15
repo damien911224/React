@@ -114,7 +114,7 @@ def build_dataloader(dataset,
     if digit_version(torch.__version__) >= digit_version('1.8.0'):
         kwargs['persistent_workers'] = persistent_workers
 
-    print(kwars)
+    print(kwargs)
     exit()
 
     data_loader = DataLoader(
