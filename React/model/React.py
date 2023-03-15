@@ -161,7 +161,8 @@ class React(BaseTAPGenerator):
             return self.forward_test(gt_bbox, snippet_num, raw_feature, video_gt_box, video_meta)
 
     @torch.no_grad()
-    def forward_test(self, gt_bbox, snippet_num, raw_feature, video_gt_box, video_meta):
+    # def forward_test(self, gt_bbox, snippet_num, raw_feature, video_gt_box, video_meta):
+    def forward_test(self, data):
         gt_bbox = data["gt_bbox"]
         snippet_num = data["snippet_num"]
         raw_feature = data["raw_feature"]
