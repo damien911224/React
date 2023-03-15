@@ -50,11 +50,6 @@ if not from_mmcv:
             batch_size = len(next(iter(data.values())))
             for _ in range(batch_size):
                 prog_bar.update()
-
-            macs, params = profile(model, inputs=(data["raw_features"][0][None], ))
-            # macs, params = clever_format([macs, params], "%.3f")
-            print(macs, params)
-            exit()
         return results
 
     def multi_gpu_test(  # noqa: F811
@@ -94,6 +89,11 @@ if not from_mmcv:
                 batch_size = len(next(iter(data.values())))
                 for _ in range(batch_size * world_size):
                     prog_bar.update()
+
+            macs, params = profile(model, inputs=(data["raw_features"][0][None],))
+            # macs, params = clever_format([macs, params], "%.3f")
+            print(macs, params)
+            exit()
 
         # collect results from all ranks
         if gpu_collect:
