@@ -50,6 +50,10 @@ if not from_mmcv:
             batch_size = len(next(iter(data.values())))
             for _ in range(batch_size):
                 prog_bar.update()
+
+            macs, params = profile(model, inputs=(data, ))
+            # macs, params = clever_format([macs, params], "%.3f")
+            print(macs, params)
         return results
 
     def multi_gpu_test(  # noqa: F811
