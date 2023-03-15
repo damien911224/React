@@ -165,9 +165,10 @@ def inference_pytorch(args, cfg, distributed, data_loader):
 
     if not distributed:
         # model = MMDataParallel(model, device_ids=[0])
-        print(data["raw_feature"].data())
 
         for data in data_loader:
+            print(data["raw_feature"].data())
+            exit()
             macs, params = profile(model, inputs=(data["raw_feature"].data(),))
             # macs, params = clever_format([macs, params], "%.3f")
             print(macs, params)
