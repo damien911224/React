@@ -239,7 +239,7 @@ class TransformerDecoder(nn.Module):
                            memory_mask=memory_mask,
                            tgt_key_padding_mask=tgt_key_padding_mask,
                            memory_key_padding_mask=memory_key_padding_mask,
-                           pos=tgt, query_pos=query_pos,
+                           pos=tgt, query_pos=query_pos.transpose(1, 0),
                            reference_point=reference_points_input,
                            valid_ratio=valid_ratio,
                            snippet_num=snippet_num)
