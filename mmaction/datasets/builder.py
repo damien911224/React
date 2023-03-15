@@ -123,7 +123,8 @@ def build_dataloader(dataset,
         pin_memory=pin_memory,
         shuffle=shuffle,
         worker_init_fn=init_fn,
-        drop_last=drop_last)
+        drop_last=drop_last,
+        **kwargs)
 
     return data_loader
 
