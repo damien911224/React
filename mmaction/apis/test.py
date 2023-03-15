@@ -45,11 +45,6 @@ if not from_mmcv:
                 result = model(return_loss=False, **data)
             results.extend(result)
 
-            macs, params = profile(model, inputs=(data["raw_features"][0][None],))
-            # macs, params = clever_format([macs, params], "%.3f")
-            print(macs, params)
-            exit()
-
             # use the first key as main key to calculate the batch size
             batch_size = len(next(iter(data.values())))
             for _ in range(batch_size):
