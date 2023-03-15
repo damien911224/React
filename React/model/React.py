@@ -161,13 +161,7 @@ class React(BaseTAPGenerator):
             return self.forward_test(gt_bbox, snippet_num, raw_feature, video_gt_box, video_meta)
 
     @torch.no_grad()
-    # def forward_test(self, gt_bbox, snippet_num, raw_feature, video_gt_box, video_meta):
-    def forward_test(self, data):
-        gt_bbox = data["gt_bbox"]
-        snippet_num = data["snippet_num"]
-        raw_feature = data["raw_feature"]
-        video_gt_box = data["video_gt_box"]
-        video_meta = data["video_meta"]
+    def forward_test(self, gt_bbox, snippet_num, raw_feature, video_gt_box, video_meta):
         # if trained with clips, stack all clip into the batch dimension, we pad the batch with the max number of clips in the batch.
         if isinstance(raw_feature[0], list):
             raw_feature = nested_tensor_from_tensor_list(raw_feature, self.clip_len, snippet_num)
