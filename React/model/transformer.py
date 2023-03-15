@@ -258,13 +258,12 @@ class TransformerDecoder(nn.Module):
             # update the reference point/segment of the next layer according to the output from the current layer
             tmp = self.segment_embed[i](output).transpose(0, 1)  # bz, Lq, 2
             if reference_point.shape[-1] == 1:
-                print("1111")
                 new_reference_points = tmp
                 new_reference_points[..., :1] = tmp[..., :1] + inverse_sigmoid(reference_point)
                 new_reference_points = new_reference_points.sigmoid()
                 reference_point = new_reference_points.detach()
+                print(reference_point.shape)
             else:
-                print("2222")
                 new_reference_points = tmp + inverse_sigmoid(reference_point)
                 new_reference_points = new_reference_points.sigmoid()
                 reference_point = new_reference_points.detach()
