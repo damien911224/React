@@ -146,7 +146,7 @@ class TransformerDecoder(nn.Module):
 
         self.reference_point = nn.Linear(self.layers[0].d_model, 1)
 
-        self.refpoint_embed = nn.Embedding(40, 1)
+        self.refpoint_embed = nn.Embedding(40, 2)
         self.ref_point_head = MLP(1 * self.layers[0].d_model, self.layers[0].d_model, self.layers[0].d_model, 2)
         self.query_scale = MLP(self.layers[0].d_model, self.layers[0].d_model, self.layers[0].d_model, 2)
 
@@ -222,37 +222,37 @@ class TransformerDecoder(nn.Module):
         intermediate = []
         intermediate_reference_points = []
 
-        # reference_point = torch.sigmoid(self.reference_point(tgt))  # bz, Lq, 1
+        reference_point = torch.sigmoid(self.reference_point(tgt))  # bz, Lq, 1
 
-        reference_point = torch.sigmoid(self.refpoint_embed.weight[None].repeat(bz, 1, 1))
+        # reference_point = torch.sigmoid(self.refpoint_embed.weight[None].repeat(bz, 1, 1))
 
         init_reference_point = reference_point
 
         for i, layer in enumerate(self.layers):
-            reference_points_input = reference_point * valid_ratio.unsqueeze(-1)
-            query_sine_embed = gen_sineembed_for_position(reference_points_input) # bs, nq, 256*2
-            print(query_sine_embed.shape)
-            raw_query_pos = self.ref_point_head(query_sine_embed) # bs, nq, 256
-            pos_scale = self.query_scale(output.transpose(1, 0)) if i != 0 else 1
-            query_pos = pos_scale * raw_query_pos
-
-            output = layer(output, memory, tgt_mask=tgt_mask,
-                           memory_mask=memory_mask,
-                           tgt_key_padding_mask=tgt_key_padding_mask,
-                           memory_key_padding_mask=memory_key_padding_mask,
-                           pos=tgt, query_pos=query_pos.transpose(1, 0),
-                           reference_point=reference_points_input,
-                           valid_ratio=valid_ratio,
-                           snippet_num=snippet_num)
+            # reference_points_input = reference_point * valid_ratio.unsqueeze(-1)
+            # query_sine_embed = gen_sineembed_for_position(reference_points_input) # bs, nq, 256*2
+            # print(query_sine_embed.shape)
+            # raw_query_pos = self.ref_point_head(query_sine_embed) # bs, nq, 256
+            # pos_scale = self.query_scale(output.transpose(1, 0)) if i != 0 else 1
+            # query_pos = pos_scale * raw_query_pos
 
             # output = layer(output, memory, tgt_mask=tgt_mask,
             #                memory_mask=memory_mask,
             #                tgt_key_padding_mask=tgt_key_padding_mask,
             #                memory_key_padding_mask=memory_key_padding_mask,
-            #                pos=tgt, query_pos=query_pos,
-            #                reference_point=reference_point * valid_ratio.unsqueeze(-1),
+            #                pos=tgt, query_pos=query_pos.transpose(1, 0),
+            #                reference_point=reference_points_input,
             #                valid_ratio=valid_ratio,
             #                snippet_num=snippet_num)
+
+            output = layer(output, memory, tgt_mask=tgt_mask,
+                           memory_mask=memory_mask,
+                           tgt_key_padding_mask=tgt_key_padding_mask,
+                           memory_key_padding_mask=memory_key_padding_mask,
+                           pos=tgt, query_pos=query_pos,
+                           reference_point=reference_point * valid_ratio.unsqueeze(-1),
+                           valid_ratio=valid_ratio,
+                           snippet_num=snippet_num)
 
             # segment refinement
             # update the reference point/segment of the next layer according to the output from the current layer
@@ -262,7 +262,6 @@ class TransformerDecoder(nn.Module):
                 new_reference_points[..., :1] = tmp[..., :1] + inverse_sigmoid(reference_point)
                 new_reference_points = new_reference_points.sigmoid()
                 reference_point = new_reference_points.detach()
-                print(reference_point.shape)
             else:
                 new_reference_points = tmp + inverse_sigmoid(reference_point)
                 new_reference_points = new_reference_points.sigmoid()

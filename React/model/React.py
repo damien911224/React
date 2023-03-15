@@ -105,8 +105,8 @@ class React(BaseTAPGenerator):
         # Define Module
         self.input_proj = MLP(input_feat_dim, feat_dim, feat_dim, 1)
 
-        # self.query_embed = nn.Embedding(num_queries, self.feat_dim * 2)
-        self.query_embed = nn.Embedding(num_queries, self.feat_dim)
+        self.query_embed = nn.Embedding(num_queries, self.feat_dim * 2)
+        # self.query_embed = nn.Embedding(num_queries, self.feat_dim)
 
         self.transformer = Transformer(num_class=num_class, d_model=feat_dim, nhead=n_head, num_encoder_layers=num_encoder_layers,
                                        num_decoder_layers=num_decoder_layers, encoder_sample_num=encoder_sample_num,
