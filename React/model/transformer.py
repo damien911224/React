@@ -587,8 +587,6 @@ def gen_sineembed_for_position(pos_tensor):
     pos_x = torch.stack((pos_x[:, :, 0::2].sin(), pos_x[:, :, 1::2].cos()), dim=3).flatten(2)
     if pos_tensor.size(-1) == 1:
         pos = pos_x
-        print(pos.shape)
-        exit()
     elif pos_tensor.size(-1) == 2:
         w_embed = pos_tensor[:, :, 1] * scale
         pos_w = w_embed[:, :, None] / dim_t
