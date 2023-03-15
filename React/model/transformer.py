@@ -147,7 +147,7 @@ class TransformerDecoder(nn.Module):
         self.reference_point = nn.Linear(self.layers[0].d_model, 1)
 
         self.refpoint_embed = nn.Embedding(40, 1)
-        self.ref_point_head = MLP(2 * self.layers[0].d_model, self.layers[0].d_model, self.layers[0].d_model, 2)
+        self.ref_point_head = MLP(1 * self.layers[0].d_model, self.layers[0].d_model, self.layers[0].d_model, 2)
         self.query_scale = MLP(self.layers[0].d_model, self.layers[0].d_model, self.layers[0].d_model, 2)
 
         # for segment refinement
