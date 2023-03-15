@@ -23,7 +23,6 @@ except (ImportError, ModuleNotFoundError):
     from_mmcv = False
 
 if not from_mmcv:
-
     def single_gpu_test(model, data_loader):  # noqa: F811
         """Test model with a single gpu.
 
@@ -41,7 +40,6 @@ if not from_mmcv:
         results = []
         dataset = data_loader.dataset
         prog_bar = mmcv.ProgressBar(len(dataset))
-        print("single")
         for data in data_loader:
             with torch.no_grad():
                 result = model(return_loss=False, **data)
