@@ -114,9 +114,6 @@ def build_dataloader(dataset,
     if digit_version(torch.__version__) >= digit_version('1.8.0'):
         kwargs['persistent_workers'] = persistent_workers
 
-    print(kwargs)
-    exit()
-
     data_loader = DataLoader(
         dataset,
         batch_size=batch_size,
@@ -126,8 +123,7 @@ def build_dataloader(dataset,
         pin_memory=pin_memory,
         shuffle=shuffle,
         worker_init_fn=init_fn,
-        drop_last=drop_last,
-        **kwargs)
+        drop_last=drop_last)
 
     return data_loader
 
