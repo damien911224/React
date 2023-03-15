@@ -167,13 +167,7 @@ def inference_pytorch(args, cfg, distributed, data_loader):
         # model = MMDataParallel(model, device_ids=[0])
 
         for data in data_loader:
-            print(len(data["raw_feature"].data))
-            print(len(data["raw_feature"].data[0]))
-            print(len(data["raw_feature"].data[0][0]))
-            print(data["raw_feature"].data[0][0][0].shape)
-            print(len(data["raw_feature"].data[0][0][0][0].shape))
-            exit()
-            macs, params = profile(model, inputs=(data["raw_feature"].data,))
+            macs, params = profile(model, inputs=(data["raw_feature"].data[0][0],))
             # macs, params = clever_format([macs, params], "%.3f")
             print(macs, params)
             exit()
