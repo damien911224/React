@@ -161,6 +161,8 @@ def inference_pytorch(args, cfg, distributed, data_loader):
     if args.fuse_conv_bn:
         model = fuse_conv_bn(model)
 
+    model = model.cuda()
+
     if not distributed:
         # model = MMDataParallel(model, device_ids=[0])
 
