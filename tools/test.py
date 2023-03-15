@@ -130,7 +130,6 @@ def turn_off_pretrained(cfg):
 
 
 def inference_pytorch(args, cfg, distributed, data_loader):
-    print("pytorch")
     """Get predictions by pytorch models."""
     if args.average_clips is not None:
         # You can set average_clips during testing, it will override the
@@ -163,9 +162,11 @@ def inference_pytorch(args, cfg, distributed, data_loader):
         model = fuse_conv_bn(model)
 
     if not distributed:
+        print("not")
         model = MMDataParallel(model, device_ids=[0])
         outputs = single_gpu_test(model, data_loader)
     else:
+        print("dis")
         model = MMDistributedDataParallel(
             model.cuda(),
             device_ids=[torch.cuda.current_device()],
@@ -177,7 +178,6 @@ def inference_pytorch(args, cfg, distributed, data_loader):
 
 
 def inference_tensorrt(ckpt_path, distributed, data_loader, batch_size):
-    print("tensorrt")
     """Get predictions by TensorRT engine.
 
     For now, multi-gpu mode and dynamic tensor shape are not supported.
@@ -228,7 +228,6 @@ def inference_tensorrt(ckpt_path, distributed, data_loader, batch_size):
 
 
 def inference_onnx(ckpt_path, distributed, data_loader, batch_size):
-    print("onnx")
     """Get predictions by ONNX.
 
     For now, multi-gpu mode and dynamic tensor shape are not supported.
