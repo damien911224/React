@@ -169,7 +169,7 @@ def inference_pytorch(args, cfg, distributed, data_loader):
         for data in data_loader:
             print(len(data["raw_feature"].data))
             print(len(data["raw_feature"].data[0]))
-            print(len(data["raw_feature"].data[0][0].shape))
+            print(len(data["raw_feature"].data[0][0])
             print(len(data["raw_feature"].data[0][0][0].shape))
             print(len(data["raw_feature"].data[0][0][0][0].shape))
             exit()
