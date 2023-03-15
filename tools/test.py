@@ -170,6 +170,7 @@ def inference_pytorch(args, cfg, distributed, data_loader):
             print(len(data["raw_feature"].data))
             print(len(data["raw_feature"].data[0]))
             print(len(data["raw_feature"].data[0][0]))
+            exit()
             macs, params = profile(model, inputs=(data["raw_feature"].data,))
             # macs, params = clever_format([macs, params], "%.3f")
             print(macs, params)
