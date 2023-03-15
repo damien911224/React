@@ -150,7 +150,7 @@ class React(BaseTAPGenerator):
                 neg_sample_segment=None,
                 candidated_segments=None,
                 video_meta=None,
-                return_loss=False):
+                return_loss=True):
         """Define the computation performed at every call."""
 
         if return_loss:

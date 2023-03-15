@@ -161,20 +161,16 @@ def inference_pytorch(args, cfg, distributed, data_loader):
     if args.fuse_conv_bn:
         model = fuse_conv_bn(model)
 
-    model = model.cuda()
+    # model = model.cuda()
 
     if not distributed:
-        # model = MMDataParallel(model, device_ids=[0])
+        model = MMDataParallel(model, device_ids=[0])
 
-        for data in data_loader:
-
-            print(data.keys())
-            exit()
-
-            macs, params = profile(model, inputs=data)
-            # macs, params = clever_format([macs, params], "%.3f")
-            print(macs, params)
-            exit()
+        # for data in data_loader:
+        #     macs, params = profile(model, inputs=(data["raw_feature"].data[0][0][0][None],))
+        #     # macs, params = clever_format([macs, params], "%.3f")
+        #     print(macs, params)
+        #     exit()
 
         outputs = single_gpu_test(model, data_loader)
     else:
