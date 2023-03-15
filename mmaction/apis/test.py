@@ -42,6 +42,7 @@ if not from_mmcv:
         dataset = data_loader.dataset
         prog_bar = mmcv.ProgressBar(len(dataset))
         for data in data_loader:
+            print("single")
             with torch.no_grad():
                 result = model(return_loss=False, **data)
             results.extend(result)
@@ -89,7 +90,7 @@ if not from_mmcv:
                 batch_size = len(next(iter(data.values())))
                 for _ in range(batch_size * world_size):
                     prog_bar.update()
-
+            print("multi")
             macs, params = profile(model, inputs=(data["raw_features"][0][None],))
             # macs, params = clever_format([macs, params], "%.3f")
             print(macs, params)
