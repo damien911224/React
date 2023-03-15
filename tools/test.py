@@ -162,7 +162,7 @@ def inference_pytorch(args, cfg, distributed, data_loader):
         model = fuse_conv_bn(model)
 
     if not distributed:
-        model = MMDataParallel(model, device_ids=[0])
+        # model = MMDataParallel(model, device_ids=[0])
 
         for data in data_loader:
             macs, params = profile(model, inputs=(data["raw_feature"],))
