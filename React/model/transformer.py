@@ -144,7 +144,8 @@ class TransformerDecoder(nn.Module):
         self.num_layers = num_layers
         self.norm = norm
 
-        self.reference_point = nn.Linear(self.layers[0].d_model, 1)
+        # self.reference_point = nn.Linear(self.layers[0].d_model, 1)
+        self.reference_point = nn.Linear(self.layers[0].d_model, 2)
 
         self.refpoint_embed = nn.Embedding(40, 2)
         self.ref_point_head = MLP(2 * self.layers[0].d_model, self.layers[0].d_model, self.layers[0].d_model, 2)
